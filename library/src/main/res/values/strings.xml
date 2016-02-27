@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MyRecyclerView</string>
+    <string name="loading">加载中...</string>
+    <string name="autoload">自动加载</string>
+    <string name="manualload">手动加载</string>
+    <string name="autoUsePic">使用图片自动加载</string>
+</resources>

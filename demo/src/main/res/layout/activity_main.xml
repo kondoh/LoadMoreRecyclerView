@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.brooks.demo.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:title="MyRecycleView"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="50dp"
+        android:hint="选择每次加载条目的数量"
+
+        />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/pages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:hint="选择加载条目的次数"
+
+        />;
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/bt_autoload"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/autoload"
+        android:textAllCaps="false"
+        android:textSize="20sp"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/bt_manualload"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/manualload"
+        android:textAllCaps="false"
+        android:textSize="20sp"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/bt_use_pic"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+         android:text="@string/autoUsePic"
+        android:textAllCaps="false"
+        android:textSize="20sp"/>
+
+</LinearLayout>
