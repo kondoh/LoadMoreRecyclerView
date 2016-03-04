@@ -39,7 +39,7 @@ public class AutoLoadActivity extends AppCompatActivity {
         myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
         recyclerView.setAdapter(myItemRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAutoLoadMoreEnable(DummyContent.hasMore(page));
+        recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
         recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -65,7 +65,7 @@ public class AutoLoadActivity extends AppCompatActivity {
                 page = 0;
                 myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
                 recyclerView.setAdapter(myItemRecyclerViewAdapter);
-                recyclerView.setAutoLoadMoreEnable(DummyContent.hasMore(page));
+                recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
                 recyclerView.setLoadingMore(false);
                 myItemRecyclerViewAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);

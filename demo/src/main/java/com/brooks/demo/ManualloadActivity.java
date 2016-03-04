@@ -38,8 +38,8 @@ public class ManualloadActivity extends AppCompatActivity {
         myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
         recyclerView.setAdapter(myItemRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAutoLoadMoreEnable(DummyContent.hasMore(page));
-        recyclerView.setLoadType(LoadMoreRecyclerView.LoadType.MANUAL_LOAD);
+        recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
+        recyclerView.setAutoLoadMore(false);
         recyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
             public void onLoadMore() {
@@ -67,8 +67,8 @@ public class ManualloadActivity extends AppCompatActivity {
                 page = 0;
                 myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
                 recyclerView.setAdapter(myItemRecyclerViewAdapter);
-                recyclerView.setAutoLoadMoreEnable(DummyContent.hasMore(page));
-                recyclerView.setLoadType(LoadMoreRecyclerView.LoadType.MANUAL_LOAD);
+                recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
+                recyclerView.setAutoLoadMore(false);
                 myItemRecyclerViewAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }

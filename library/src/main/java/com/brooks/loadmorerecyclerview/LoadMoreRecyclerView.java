@@ -12,20 +12,21 @@ import android.widget.TextView;
 
 public class LoadMoreRecyclerView extends RecyclerView {
 
-    /**
-     * item 类型
-     */
-    public final static int TYPE_FOOTER = 2;//底部--往往是loading_more
 
-    public final static int TYPE_LIST = 3;//代表item展示的模式是list模式
+    //底部--往往是loading_more
+    public final static int TYPE_FOOTER = 2;
 
-    private boolean mIsFooterEnable;//是否允许加载更多
+    //代表item展示的模式是list模式
+    public final static int TYPE_LIST = 3;
 
-    LoadType loadType = LoadType.AUTO_LOAD;
+    //是否允许加载更多
+    private boolean mIsFooterEnable;
 
-    /**
-     * 自定义实现了头部和底部加载更多的adapter
-     */
+    //true是自动加载模式, false手动加载模式
+    private boolean isAutoLoadMore = true;
+
+
+    //自定义实现了头部和底部加载更多的adapter
     private AutoLoadAdapter mAutoLoadAdapter;
 
     /**
@@ -41,9 +42,9 @@ public class LoadMoreRecyclerView extends RecyclerView {
     /**
      * 加载更多的监听-业务需要实现加载数据
      */
-    private LoadMoreListener mListener;
+    private LoadMoreListener mLoadMoreListener;
 
-    private TextView loadmore;
+    private TextView btnLoadMore;
 
     private ProgressBar progressBar;
 
@@ -67,7 +68,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
      * <p/>
      * 回调加载更多方法，前提是
      * <pre>
-     *    1、有监听并且支持加载更多：null != mListener && mIsFooterEnable
+     *    1、有监听并且支持加载更多：null != mLoadMoreListener && mIsFooterEnable
      *    2、目前没有在加载，正在上拉（dy>0），当前最后一条可见的view是否是当前数据列表的最后一条--及加载更多
      * </pre>
      */
@@ -81,12 +82,12 @@ public class LoadMoreRecyclerView extends RecyclerView {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (null != mListener && mIsFooterEnable && !mIsLoadingMore && dy >= 0) {
+                if (null != mLoadMoreListener && mIsFooterEnable && !mIsLoadingMore && dy >= 0) {
                     int lastVisiblePosition = getLastVisiblePosition();
-                    if (lastVisiblePosition + 1 == mAutoLoadAdapter.getItemCount() && loadType == LoadType.AUTO_LOAD) {
+                    if (lastVisiblePosition + 1 == mAutoLoadAdapter.getItemCount() && isAutoLoadMore) {
                         setLoadingMore(true);
                         mLoadMorePosition = lastVisiblePosition;
-                        mListener.onLoadMore();
+                        mLoadMoreListener.onLoadMore();
                     }
                 }
             }
@@ -99,7 +100,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
      * @param listener
      */
     public void setLoadMoreListener(LoadMoreListener listener) {
-        mListener = listener;
+        mLoadMoreListener = listener;
     }
 
     /**
@@ -159,20 +160,17 @@ public class LoadMoreRecyclerView extends RecyclerView {
         return ((LinearLayoutManager) getLayoutManager()).findLastVisibleItemPosition();
     }
 
-    /**
-     * 设置将加载方式，是自动加载还是手动加载
-     */
-    public void setLoadType(LoadType loadType) {
-        this.loadType = loadType;
+    public void setAutoLoadMore(boolean isAutoLoadMore) {
+        this.isAutoLoadMore = isAutoLoadMore;
     }
 
     /**
      * 设置是否支持自动加载更多
      *
-     * @param autoLoadMore
+     * @param loadMoreEnable
      */
-    public void setAutoLoadMoreEnable(boolean autoLoadMore) {
-        mIsFooterEnable = autoLoadMore;
+    public void setLoadMoreEnable(boolean loadMoreEnable) {
+        mIsFooterEnable = loadMoreEnable;
     }
 
     /**
@@ -184,8 +182,8 @@ public class LoadMoreRecyclerView extends RecyclerView {
      * @param hasMore
      */
     public void notifyMoreFinish(boolean hasMore) {
-        setAutoLoadMoreEnable(hasMore);
-        if (loadType == LoadType.AUTO_LOAD)
+        setLoadMoreEnable(hasMore);
+        if (isAutoLoadMore)
             getAdapter().notifyItemRemoved(mLoadMorePosition);
         else {
             getAdapter().notifyItemChanged(mLoadMorePosition + 1);
@@ -230,11 +228,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_FOOTER) {
-                if (loadType == LoadType.AUTO_LOAD) {
-                    return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_foot_loading, parent, false));
-                } else {
-                    return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_foot_loadmore, parent, false));
-                }
+                return new FooterViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_foot_loadmore, parent, false));
             } else {
                 return mInternalAdapter.onCreateViewHolder(parent, viewType);
             }
@@ -263,24 +257,20 @@ public class LoadMoreRecyclerView extends RecyclerView {
         public class FooterViewHolder extends ViewHolder {
             public FooterViewHolder(View itemView) {
                 super(itemView);
-                if (loadType == LoadType.AUTO_LOAD) {
-                    ProgressBar whorlView = (ProgressBar) itemView.findViewById(R.id.progressbar);
+                btnLoadMore = (TextView) itemView.findViewById(R.id.loadmore);
+                progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
+                btnLoadMore.setOnClickListener(new OnClickListener() {
 
-                } else {
-                    loadmore = (TextView) itemView.findViewById(R.id.loadmore);
-                    progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
-                    loadmore.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!mIsLoadingMore) {
-                                setLoadingMore(true);
-                                progressBar.setVisibility(VISIBLE);
-                                loadmore.setVisibility(GONE);
-                                mListener.onLoadMore();
-                            }
+                    @Override
+                    public void onClick(View v) {
+                        if (!mIsLoadingMore) {
+                            setLoadingMore(true);
+                            progressBar.setVisibility(VISIBLE);
+                            btnLoadMore.setVisibility(GONE);
+                            mLoadMoreListener.onLoadMore();
                         }
-                    });
-                }
+                    }
+                });
             }
         }
     }
@@ -290,10 +280,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
      */
     public void handleCallback() {
         progressBar.setVisibility(GONE);
-        loadmore.setVisibility(VISIBLE);
-    }
-
-    public enum LoadType {
-        AUTO_LOAD, MANUAL_LOAD
+        btnLoadMore.setVisibility(VISIBLE);
     }
 }
