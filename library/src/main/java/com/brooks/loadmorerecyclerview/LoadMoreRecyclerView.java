@@ -7,9 +7,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.tt.whorlviewlibrary.WhorlView;
 
 public class LoadMoreRecyclerView extends RecyclerView {
 
@@ -46,7 +45,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
 
     private TextView loadmore;
 
-    private WhorlView whorlView;
+    private ProgressBar progressBar;
 
     public LoadMoreRecyclerView(Context context) {
         super(context);
@@ -265,18 +264,17 @@ public class LoadMoreRecyclerView extends RecyclerView {
             public FooterViewHolder(View itemView) {
                 super(itemView);
                 if (loadType == LoadType.AUTO_LOAD) {
-                    WhorlView whorlView = (WhorlView) itemView.findViewById(R.id.whorl);
-                    whorlView.start();
+                    ProgressBar whorlView = (ProgressBar) itemView.findViewById(R.id.progressbar);
+
                 } else {
                     loadmore = (TextView) itemView.findViewById(R.id.loadmore);
-                    whorlView = (WhorlView) itemView.findViewById(R.id.whorl);
-                    whorlView.start();
+                    progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
                     loadmore.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (!mIsLoadingMore) {
                                 setLoadingMore(true);
-                                whorlView.setVisibility(VISIBLE);
+                                progressBar.setVisibility(VISIBLE);
                                 loadmore.setVisibility(GONE);
                                 mListener.onLoadMore();
                             }
@@ -291,7 +289,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
      * 处理回调，使loadmore显示和whorlView隐藏
      */
     public void handleCallback() {
-        whorlView.setVisibility(GONE);
+        progressBar.setVisibility(GONE);
         loadmore.setVisibility(VISIBLE);
     }
 

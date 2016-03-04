@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:gravity="center"
@@ -16,15 +15,9 @@
         android:text="加载更多"
         android:textSize="20sp" />
 
-    <com.tt.whorlviewlibrary.WhorlView
-        android:id="@+id/whorl"
-        android:layout_width="1dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="2dp"
-        android:visibility="gone"
-        app:whorlview_circle_colors="#F14336_#00FF00_#5677fc_#F44336_#4CAF50"
-        app:whorlview_circle_speed="360"
-        app:whorlview_parallax="fast"
-        app:whorlview_strokeWidth="6"
-        app:whorlview_sweepAngle="90" />
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="gone" />
 </LinearLayout>
