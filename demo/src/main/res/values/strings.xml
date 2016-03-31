@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">MyRecyclerView</string>
-    <string name="loading">loading...</string>
-    <string name="autoload">autoLoad</string>
-    <string name="manualload">manualLoad</string>
-    <string name="autoUsePic">autoLoad Use  Picture Animation</string>
+    <string name="loading">正在加载...</string>
+    <string name="autoload">自动加载</string>
+    <string name="manualload">手动加载</string>
 </resources>

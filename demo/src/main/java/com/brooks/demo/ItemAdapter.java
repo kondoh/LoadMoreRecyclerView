@@ -10,57 +10,51 @@ import com.brooks.demo.dummy.DummyContent;
 
 import java.util.List;
 
-/**
- * TODO: Replace the implementation with code for your data type.
- */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<DummyContent.DummyItem> mValues;
+public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public MyItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-        mValues = items;
-    }
+    private List<DummyContent.DummyItem> datas;
 
-    public void setData(List<DummyContent.DummyItem> datas) {
-        mValues = datas;
+    public ItemAdapter(List<DummyContent.DummyItem> items) {
+        datas = items;
     }
 
     public void addDatas(List<DummyContent.DummyItem> datas) {
-        mValues.addAll(datas);
+        this.datas.addAll(datas);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolder mHolder = (ViewHolder) holder;
-        mHolder.mItem = mValues.get(position);
-        mHolder.mContentView.setText(mValues.get(position).content);
+        mHolder.mItem = datas.get(position);
+        mHolder.mText.setText(datas.get(position).content);
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return datas.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public View mView;
-        public TextView mContentView;
+        public TextView mText;
         public DummyContent.DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mText = (TextView) view.findViewById(R.id.text);
         }
 
         @Override
         public String toString() {
-            return mContentView.getText().toString();
+            return mText.getText().toString();
         }
     }
 }

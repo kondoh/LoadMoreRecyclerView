@@ -6,14 +6,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.brooks.demo.dummy.DummyContent;
 import com.brooks.loadmorerecyclerview.LoadMoreRecyclerView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 public class ManualloadActivity extends AppCompatActivity {
+
     private LoadMoreRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private MyItemRecyclerViewAdapter myItemRecyclerViewAdapter;
+    private ItemAdapter adapter;
     private int page = 0;
 
     @Override
@@ -21,7 +26,7 @@ public class ManualloadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manualload);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("ManualLoad");
+        toolbar.setTitle(R.string.manualload);
         toolbar.setTitleTextColor(Color.BLACK);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -35,8 +40,9 @@ public class ManualloadActivity extends AppCompatActivity {
     private void loadRecyclerView() {
         recyclerView = (LoadMoreRecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
-        myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
-        recyclerView.setAdapter(myItemRecyclerViewAdapter);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
+        adapter = new ItemAdapter(DummyContent.generateData(page));
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
         recyclerView.setAutoLoadMore(false);
@@ -47,29 +53,42 @@ public class ManualloadActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
-                        myItemRecyclerViewAdapter.addDatas(DummyContent.generateData(++page));
+                        adapter.addDatas(DummyContent.generateData(++page));
                         recyclerView.notifyMoreFinish(DummyContent.hasMore(page));
-                        recyclerView.handleCallback();
                     }
                 }, 1000);
             }
         });
-        myItemRecyclerViewAdapter.notifyDataSetChanged();
+        recyclerView.setOnRecyclerViewListener(new LoadMoreRecyclerView.OnRecyclerViewListener() {
+
+            @Override
+            public void onItemClick(View v, int position) {
+                Log.i("recyclerView", "onItemClick position:" + position);
+                Toast.makeText(ManualloadActivity.this, "onItemClick position:" + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean onItemLongClick(View v, int position) {
+                Log.i("recyclerView", "onItemLongClick position:" + position);
+                Toast.makeText(ManualloadActivity.this, "onItemLongClick position:" + position, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     private void loadRefreshLayout() {
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_color1, R.color.refresh_color2,
-                R.color.refresh_color3, R.color.refresh_color4);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_color1, R.color.refresh_color2, R.color.refresh_color3, R.color.refresh_color4);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 page = 0;
-                myItemRecyclerViewAdapter = new MyItemRecyclerViewAdapter(DummyContent.generateData(page));
-                recyclerView.setAdapter(myItemRecyclerViewAdapter);
+                adapter = new ItemAdapter(DummyContent.generateData(page));
+                recyclerView.setAdapter(adapter);
                 recyclerView.setLoadMoreEnable(DummyContent.hasMore(page));
                 recyclerView.setAutoLoadMore(false);
-                myItemRecyclerViewAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
