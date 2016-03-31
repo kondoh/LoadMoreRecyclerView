@@ -1,10 +1,7 @@
 
-# 三种加载方式 #
+# 两种加载方式 #
 #### 自动加载 ####
 ![](http://i.imgur.com/ds4wkxE.gif)
 
 #### 手动加载 ####
 ![](http://i.imgur.com/C25JqMO.gif)
-
-#### 使用图片动画加载 ####
-![](http://i.imgur.com/ydKOPrp.gif)
